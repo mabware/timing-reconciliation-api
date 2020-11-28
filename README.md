@@ -4,7 +4,7 @@ Service to receive timestamps from a start and finish timing gates and match the
 
 Drivers are expected to follow the states below:
 
-POST /stage
-POST /start (if multiple drivers are staged this time will be awarded to the first that was staged)
-POST /finish (if multiple drivers have started this time will be awarded to the first that was staged)
-POST /confirm 
+1. POST /stage
+2. POST /start (if multiple drivers are staged this time will be awarded to the first that was staged)
+3. POST /finish (if multiple drivers have started this time will be awarded to the first that was staged)
+4. POST /confirm 
