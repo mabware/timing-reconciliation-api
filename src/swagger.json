@@ -1,0 +1,184 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "timing reconciliation api",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    }
+  },
+  "host": "localhost:5001",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/stage": {
+      "post": {
+        "summary": "Stage a driver",
+        "description": "",
+        "operationId": "stageDriver",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Object containing the driver id",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/driverid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Driver Staged"
+          }
+        }
+      }
+    },
+    "/start": {
+      "post": {
+        "summary": "Start a driver",
+        "description": "The time will be added as the start time of the oldest staged driver",
+        "operationId": "startDriver",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Object containing the driver id",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/startTime"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Driver Staged"
+          }
+        }
+      }
+    },
+    "/finish": {
+      "post": {
+        "summary": "Finish a driver",
+        "description": "The time will be added as the finish time of the oldest running driver",
+        "operationId": "finishDriver",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Object containing the driver id",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/finishTime"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Driver Staged"
+          }
+        }
+      }
+    },
+    "/confirm": {
+      "post": {
+        "summary": "Confirm a driver",
+        "description": "",
+        "operationId": "confirmDriver",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Object containing the driver id",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/driver"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Driver Staged"
+          }
+        }
+      }
+    },
+    "/reset": {
+      "post": {
+        "summary": "Removes all drivers and state",
+        "description": "",
+        "operationId": "reset",
+        "responses": {
+          "204": {
+            "description": "API reset"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "driverid": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "driver": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "penalty": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "wrongTest": {
+          "type": "boolean"
+        }
+      }
+    },
+    "startTime": {
+      "type": "object",
+      "properties": {
+        "startTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "start timestamp (milliseconds)"
+        }
+      }
+    },
+    "finishTime": {
+      "type": "object",
+      "properties": {
+        "finishTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "finish timestamp (milliseconds)"
+        }
+      }
+    }
+  }
+}

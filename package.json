@@ -1,0 +1,26 @@
+{
+  "name": "timing-reconciliation-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mabware/timing-reconciliation-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mabware/timing-reconciliation-api/issues"
+  },
+  "homepage": "https://github.com/mabware/timing-reconciliation-api#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "javascript-state-machine": "^3.1.0",
+    "swagger-ui-express": "^4.1.5"
+  }
+}
