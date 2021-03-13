@@ -13,6 +13,21 @@
     "http"
   ],
   "paths": {
+    "/currentState": {
+      "get": {
+        "summary": "Get current state of running",
+        "description": "",
+        "operationId": "currentState",
+        "responses": {
+          "200": {
+            "description": "Driver Staged",
+            "schema": {
+              "$ref": "#/definitions/currentState"
+            }
+          }
+        }
+      }
+    },
     "/stage": {
       "post": {
         "summary": "Stage a driver",
@@ -86,7 +101,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Driver Staged"
+            "description": "Driver finished"
           }
         }
       }
@@ -112,7 +127,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Driver Staged"
+            "description": "Driver confirmed"
           }
         }
       }
@@ -177,6 +192,29 @@
           "type": "integer",
           "format": "int64",
           "description": "finish timestamp (milliseconds)"
+        }
+      }
+    },
+    "currentState": {
+      "type": "object",
+      "properties": {
+        "staged": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "running": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "finished": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     }
