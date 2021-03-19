@@ -22,13 +22,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 let drivers = [];
 
-io.on("connection", (socket) => {
-  console.log("New client connected");
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
-});
-
 app.get('/currentState', (req, res) => {
   const currentState = {
     staged: drivers.filter(driver => driver.is('staged')).map(driver => driver.id),
@@ -44,17 +37,28 @@ app.post('/stage', (req, res) => {
   res.sendStatus(204);
 });
 
+app.get('/stage', (req, res) => {
+  res.json(drivers.filter(driver => driver.is('staged')).map(driver => driver.id));
+});
+
 app.post('/start', (req, res) => {
   drivers.find(driver => driver.is('staged')).start(req.body.startTime);
   io.emit('stateUpdate');
   res.sendStatus(204);
 });
 
+app.get('/start', (req, res) => {
+  res.json(drivers.filter(driver => driver.is('running')).map(driver => driver.id));
+});
+
 app.post('/finish', (req, res) => {
   drivers.find(driver => driver.is('running')).finish(req.body.finishTime);
   io.emit('stateUpdate');
-  console.log(drivers)
   res.sendStatus(204);
+});
+
+app.get('/finish', (req, res) => {
+  res.json(drivers.filter(driver => driver.is('finished')).map(driver => driver.id));
 });
 
 app.post('/confirm', (req, res) => {

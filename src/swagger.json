@@ -52,6 +52,22 @@
             "description": "Driver Staged"
           }
         }
+      },
+      "get": {
+        "summary": "Gets an array of drivers numbers that have staged",
+        "operationId": "stagedDrivers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Drivers Staged",
+            "schema": {
+              "$ref": "#/definitions/driversArray"
+            }
+  
+          }
+        }
       }
     },
     "/start": {
@@ -78,6 +94,22 @@
             "description": "Driver Staged"
           }
         }
+      }, 
+      "get": {
+        "summary": "Gets an array of drivers numbers that have started",
+        "operationId": "startedDrivers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Drivers Started",
+            "schema": {
+              "$ref": "#/definitions/driversArray"
+            }
+  
+          }
+        }
       }
     },
     "/finish": {
@@ -102,6 +134,22 @@
         "responses": {
           "200": {
             "description": "Driver finished"
+          }
+        }
+      },
+      "get": {
+        "summary": "Gets an array of drivers numbers that have finished",
+        "operationId": "finishedDrivers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Drivers Finished",
+            "schema": {
+              "$ref": "#/definitions/driversArray"
+            }
+  
           }
         }
       }
@@ -195,27 +243,18 @@
         }
       }
     },
+    "driversArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "currentState": {
       "type": "object",
       "properties": {
-        "staged": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "running": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "finished": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
+        "staged": "#/definitions/driversArray",
+        "running": "#/definitions/driversArray",
+        "finished": "#/definitions/driversArray"
       }
     }
   }
