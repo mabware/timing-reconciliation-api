@@ -60,20 +60,22 @@ app.post('/finish', (req, res) => {
 });
 
 app.post('/cancelFinish', (req, res) => {
+  console.log('here')
   let finishedTime;
-  drivers.some((driver) => {
-    if (driver.is('finised')) {
+  if(drivers.find((driver) => driver.id === req.body.id)) {
+    drivers.filter((driver) => driver.is('finished')).reverse().some((driver) => {
       const lastfinshedTime = finishedTime;
       finishedTime = driver.finishTime;
       driver.cancelFinish();
       if (lastfinshedTime) {
         driver.finish(lastfinshedTime);
       }
-    }
-    return driver.id === req.body.id;
-  });
-  ioSocket.emit('stateUpdate');
-  res.sendStatus(204);
+      return driver.id === req.body.id;
+    });
+    ioSocket.emit('stateUpdate');
+    res.sendStatus(204);
+  }
+  res.sendStatus(404);
 });
 
 app.get('/finish', (req, res) => {
@@ -99,6 +101,18 @@ app.delete('/driver/:id', (req, res) => {
     drivers.splice(index, 1);
     ioSocket.emit('stateUpdate');
     res.sendStatus(204);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+app.get('/driver/:id', (req, res) => {
+  const driver = drivers.find((driver) => driver.id === req.params.id);
+  if (driver) {
+    res.json({
+      state: driver.state,
+      time: driver.finishTime && driver.startTime ? (driver.finishTime - driver.startTime) / 1000 : null,
+    });
   } else {
     res.sendStatus(404);
   }

@@ -65,7 +65,6 @@
             "schema": {
               "$ref": "#/definitions/driversArray"
             }
-  
           }
         }
       }
@@ -94,7 +93,7 @@
             "description": "Driver Staged"
           }
         }
-      }, 
+      },
       "get": {
         "summary": "Gets an array of drivers numbers that have started",
         "operationId": "startedDrivers",
@@ -107,7 +106,6 @@
             "schema": {
               "$ref": "#/definitions/driversArray"
             }
-  
           }
         }
       }
@@ -149,7 +147,6 @@
             "schema": {
               "$ref": "#/definitions/driversArray"
             }
-  
           }
         }
       }
@@ -180,6 +177,32 @@
         }
       }
     },
+    "/cancelFinish": {
+      "post": {
+        "summary": "Cancels a driver finishTime",
+        "description": "",
+        "operationId": "cancelFinish",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Object containing the driver id",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/driverid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Driver finish time removed"
+          }
+        }
+      }
+    },
     "/reset": {
       "post": {
         "summary": "Removes all drivers and state",
@@ -188,6 +211,49 @@
         "responses": {
           "204": {
             "description": "API reset"
+          }
+        }
+      }
+    },
+    "/driver/{driverId}": {
+      "get": {
+        "summary": "Gets the specified driver",
+        "description": "",
+        "operationId": "getDriver",
+        "parameters": [
+          {
+            "in": "path",
+            "type": "string",
+            "name": "driverId",
+            "description": "The driver id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API reset",
+            "schema": {
+              "$ref": "#/definitions/driverTime"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Gets the specified driver",
+        "description": "",
+        "operationId": "deleteDriver",
+        "parameters": [
+          {
+            "in": "path",
+            "type": "string",
+            "name": "driverId",
+            "description": "The driver id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete Driver"
           }
         }
       }
@@ -252,9 +318,30 @@
     "currentState": {
       "type": "object",
       "properties": {
-        "staged": "#/definitions/driversArray",
-        "running": "#/definitions/driversArray",
-        "finished": "#/definitions/driversArray"
+        "staged": {
+          "$ref": "#/definitions/driversArray"
+        },
+        "running": {
+          "$ref": "#/definitions/driversArray"
+        },
+        "finished": {
+          "$ref": "#/definitions/driversArray"
+        }
+      }
+    },
+    "driverTime": {
+      "type": "object",
+      "required": [
+        "id",
+        "time"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "time": {
+          "type": "number"
+        }
       }
     }
   }
