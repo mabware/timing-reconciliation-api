@@ -44,9 +44,14 @@ app.get('/stage', (req, res) => {
 });
 
 app.post('/start', (req, res) => {
-  drivers.find((driver) => driver.is('staged')).start(req.body.startTime);
-  ioSocket.emit('stateUpdate');
-  res.sendStatus(204);
+  const driver = drivers.find((driver) => driver.is('staged'));
+  if (driver) {
+    driver.start(req.body.startTime);
+    ioSocket.emit('stateUpdate');
+    res.sendStatus(204);
+    return;
+  }
+  res.sendStatus(404);
 });
 
 app.get('/start', (req, res) => {
@@ -54,9 +59,18 @@ app.get('/start', (req, res) => {
 });
 
 app.post('/finish', (req, res) => {
-  drivers.find((driver) => driver.is('running')).finish(req.body.finishTime);
-  ioSocket.emit('stateUpdate');
-  res.sendStatus(204);
+  const driver = drivers.find((driver) => driver.is('running'));
+  if (driver) {
+    driver.finish(req.body.finishTime);
+    ioSocket.emit('stateUpdate');
+    res.sendStatus(204);
+    return;
+  }
+  res.sendStatus(404);
+});
+
+app.get('/finish', (req, res) => {
+  res.json(drivers.filter((driver) => driver.is('finished')).map((driver) => driver.id));
 });
 
 app.post('/cancelFinish', (req, res) => {
@@ -76,10 +90,6 @@ app.post('/cancelFinish', (req, res) => {
     res.sendStatus(204);
   }
   res.sendStatus(404);
-});
-
-app.get('/finish', (req, res) => {
-  res.json(drivers.filter((driver) => driver.is('finished')).map((driver) => driver.id));
 });
 
 app.post('/confirm', (req, res) => {
@@ -111,7 +121,7 @@ app.get('/driver/:id', (req, res) => {
   if (driver) {
     res.json({
       state: driver.state,
-      time: driver.finishTime && driver.startTime ? (driver.finishTime - driver.startTime) / 1000 : null,
+      time: driver.finishTime && driver.startTime ? ((driver.finishTime - driver.startTime) / 1000).toFixed(2) : null,
     });
   } else {
     res.sendStatus(404);
